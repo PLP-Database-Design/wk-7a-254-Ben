@@ -1,56 +1,42 @@
 -- Question 1 Achieving 1NF (First Normal Form) 
 -- customer table
-CREATE TABLE Customer_1NF(
-OrderID INT PRIMARY KEY AUTO_INCREMENT,
-CustomerName VARCHAR(100)
-);
--- Table Products
-CREATE TABLE Products_1NF(
-product_1d INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(50),
+CREATE TABLE Productdeatail_1NF(
 OrderID INT,
-FOREIGN KEY(OrderID) REFERENCES Customer_1NF(OrderID)
+CustomerName VARCHAR(100),
+Products VARCHAR(100)
 );
-
 -- populate the ProductDetail table with sample data
-INSERT INTO Customer_1NF(OrderID,CustomerName)
+INSERT INTO Productdetail_1NF(OrderID,CustomerName.Products)
 VALUES
-(101,"John Doe"),
-(102,"Jane Smith"),
-(103,"Emily Clark");
-
--- populate the Products table with sample data
-INSERT INTO Products_1NF(name,OrderID)
-VALUES
-("Laptop",101),
-("Mouse",101),
-("Tablet",102),
-("Keyboard",102),
-("Mouse",102),
-("Phone",103);
+(101,"John Doe"," Laptop"),
+(101,"John Doe"," Mouse"),
+(102,"Jane Smith"," Tablet"),
+(102,"Jane Smith"," Keyboard"),
+(102,"Jane Smith"," Mouse"),
+(103,"Emily Clark"," Phone");
 
 -- Question 2 Achieving 2NF (Second Normal Form)
 -- order table
-CREATE TABLE Orders_2NF(
-    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Orders(
+    OrderID INT PRIMARY KEY,
     CustomerName VARCHAR(100)
 );
--- order details table
-CREATE TABLE OrderDetails_2NF(
-    OrderDetailID INT PRIMARY KEY AUTO_INCREMENT,
-    OrderID INT,
-    Product VARCHAR(100),
-    Quantity INT,
-    FOREIGN KEY(OrderID) REFERENCES Orders_2NF(OrderID)
-);
--- populate the Orders_2NF table with sample data
-INSERT INTO Orders_2NF(OrderID,CustomerName)
+-- populate the Orders table with sample data
+INSERT INTO Orders(OrderID,CustomerName)
 VALUES
 (101,"John Doe"),
 (102,"Jane Smith"),
 (103,"Emily Clark");
--- populate the OrderDetails_2NF table with sample data
-INSERT INTO OrderDetails_2NF(OrderID,Product,Quantity)
+-- Products  table
+CREATE TABLE Product(
+    OrderID INT,
+    Product VARCHAR(100),
+    Quantity INT,
+    PRIMARY KEY(OrderID,Product),
+    FOREIGN KEY(OrderID) REFERENCES Orders(OrderID)
+);
+-- populate Product table with sample data
+INSERT INTO Product(OrderID,Product,Quantity)
 VALUES
 (101,"Laptop",2),
 (101,"Mouse",1),
